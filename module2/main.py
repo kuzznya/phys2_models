@@ -34,7 +34,7 @@ def plot_results(plot_path: str, visibility: analysis.Visibility):
 
 
 def main(debug: bool = False):
-    data = reader.read('resources/rings.png')
+    data = reader.read('module2/resources/rings.png')
 
     # Strip top & bottom parts of picture because they are too dark
     data = data[(len(data) // 5):(len(data) - len(data) // 5)]
@@ -52,9 +52,9 @@ def main(debug: bool = False):
 
     print(str(visibility.func))
 
-    if not path.exists('results'):
-        mkdir('results')
-    plot_results('results/plot.png', visibility)
+    if not path.exists('module2/results'):
+        mkdir('module2/results')
+    plot_results('module2/results/plot.png', visibility)
 
 
 if __name__ == '__main__':
