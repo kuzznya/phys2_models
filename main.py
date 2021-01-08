@@ -5,13 +5,7 @@ import matplotlib.pyplot as pyplot
 from os import path, mkdir
 
 
-def print_data(data: [[int]]):
-    i = 0
-    for row in data:
-        print(f"{i}: ", " ".join(map(lambda value: '{:0>3d}'.format(value), row)))
-        i += 1
-
-
+# Find center line of picture (with black circle)
 def find_center(data: [[int]]) -> [int]:
     if len(data) == 0:
         return []
@@ -25,6 +19,7 @@ def find_center(data: [[int]]) -> [int]:
     return data[min_i]
 
 
+# Plot chart and save to file
 def plot_results(plot_path: str, visibility: analysis.Visibility):
     pyplot.grid()
     pyplot.title('V(r)')
@@ -33,7 +28,7 @@ def plot_results(plot_path: str, visibility: analysis.Visibility):
 
     r = range(len(visibility.values))
 
-    pyplot.plot(r, visibility.func(r), visibility.values, 'bo')
+    pyplot.plot(r, visibility.func(r), r, visibility.values, 'bo')
 
     pyplot.savefig(plot_path)
 
@@ -43,22 +38,24 @@ def main(debug: bool = False):
 
     # Strip top & bottom parts of picture because they are too dark
     data = data[(len(data) // 5):(len(data) - len(data) // 5)]
+
     # Find line, containing center of circle
     values = find_center(data)
 
-    values = values[(len(values) // 5):(len(values) - len(values) // 4)]
+    # Turn line to receive it from center to the end of rings
+    values = values[515:60:-1]
+
     # Find extremes of this line
     extremes = analysis.extremes(values)
     # Find approximated visibility function
     visibility = analysis.visibility(extremes)
 
     print(str(visibility.func))
-    if debug:
-        print(len(visibility.values))
+
     if not path.exists('results'):
         mkdir('results')
     plot_results('results/plot.png', visibility)
 
 
 if __name__ == '__main__':
-    main(debug=True)
+    main(debug=False)
