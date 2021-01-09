@@ -23,16 +23,23 @@ class OscillatoryCircuit:
 
     @property
     def __betta__(self) -> float:
-        return self.resistance / self.L
+        return self.resistance / (2 * self.L)
 
     @property
-    def __lambda__(self) -> float:
-        period = math.pi / math.sqrt(1 / (self.L * self.C) - (self.resistance ** 2) / (4 * (self.L ** 2)))
-        return self.__betta__ * period
+    def lambda_coefficient(self) -> float:
+        return self.__betta__ * self.period
 
     @property
     def resistance(self) -> float:
         return self.Rm + self.R0
+
+    @property
+    def period(self) -> float:
+        return 2 * math.pi / self.frequency
+
+    @property
+    def q_factor(self) -> float:
+        return 1 / self.resistance * math.sqrt(self.L / self.C)
 
     def capacitor_charge(self, time: float) -> float:
         q0 = self.__initial_capacitor_charge__
